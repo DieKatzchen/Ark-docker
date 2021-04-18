@@ -1,19 +1,17 @@
 #!/bin/sh
 
+service ssh start
+
 # Change the UID if needed
-if [ ! "$(id -u steam)" -eq "$UID" ]; then
+if [ ! "$(id -u steam)" -eq "$UID" ]; then 
 	echo "Changing steam uid to $UID."
-	usermod -o -u "$UID" steam ;
+	usermod -o -u "$UID" steam ; 
 fi
 # Change gid if needed
-if [ ! "$(id -g steam)" -eq "$GID" ]; then
+if [ ! "$(id -g steam)" -eq "$GID" ]; then 
 	echo "Changing steam gid to $GID."
-	groupmod -o -g "$GID" steam ;
+	groupmod -o -g "$GID" steam ; 
 fi
-
-# Add Ark Server Tools to Path
-export PATH=$PATH:/home/steam/ark-server-tools/:/home/steam/ark-server-tools/tools/
-
 
 # Put steam owner of directories (if the uid changed, then it's needed)
 chown -R steam:steam /ark /home/steam
@@ -22,4 +20,4 @@ chown -R steam:steam /ark /home/steam
 chmod -R 777 /root/
 
 # Launch run.sh with user steam (-p allow to keep env variables)
-sudo --preserve-env --user=steam /home/steam/run.sh
+su -p - steam -c /home/steam/run.sh
